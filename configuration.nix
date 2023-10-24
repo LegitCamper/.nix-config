@@ -61,7 +61,7 @@
     };
     # auto mounts usb drives
     udev.extraRules = ''
-      ACTION=="add", SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", RUN{program}+="${pkgs.systemd}/bin/systemd-mount --no-block --automount=yes --collect $devnode /media"       
+      ACTION=="add", SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", RUN{program}+="${pkgs.systemd}/bin/systemd-mount --no-block --o umask=000 --automount=yes --collect $devnode /external-drive"      
     '';
 
     # enable sound with pipewire
