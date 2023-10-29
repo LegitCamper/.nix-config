@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   nixpkgs.config = {
     allowUnfree = true;
     # the following should only be temporary!!!!!!!
@@ -221,9 +221,19 @@
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   system.copySystemConfiguration = false;
-  system.autoUpgrade.enable = false;
-  system.autoUpgrade.allowReboot = false;
-  system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.05";
+  system.autoUpgrade = { 
+    enable = false;
+    allowReboot = false;
+    channel = "https://channels.nixos.org/nixos-23.05";
+    flake = inputs.self.outPath;
+    flags = [
+      "--update-input"
+      "nixpkgs"
+      "-L" # print build logs
+    ];
+    dates = "02:00";
+    randomizedDelaySec = "45min";
+  };
   systemd.additionalUpstreamSystemUnits = [ "debug-shell.service" ];
 
   # This value determines the NixOS release from which the default

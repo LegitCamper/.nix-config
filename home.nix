@@ -8,6 +8,9 @@
     #-- customize flake packages here
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-ge
+    
+    # overlay installation
+    ytdlp-gui
 
     # Networking tools
     inetutils # hostname ping ifconfig...
