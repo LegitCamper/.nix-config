@@ -31,12 +31,17 @@
             enableNvidiaPatches = false;
           };
         }
+
+        # define overlays here
+        ({ config, pkgs, ... }: {
+          nixpkgs.overlays = [
+            inputs.ytdlp-gui.overlay
+            # 
+          ];
+        })
       ];
 
     in {
-      # used when calling `nix fmt <path/to/flake.nix>`
-      formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
-
       # gets separate configuration for each computer
       nixosConfigurations = {
         nixos-desktop = nixpkgs.lib.nixosSystem {
@@ -49,9 +54,13 @@
         };
       };
 
+      # used when calling `nix fmt <path/to/flake.nix>`
+      formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
+
       devShells = forAllSystems
         ({ pkgs }: { default = pkgs.mkShell { imports = [ ./devshells ]; }; });
 
+      # define packages here
       # packages = forAllSystems ({ pkgs }: { hello = pkgs.hello; });
     };
 
@@ -69,6 +78,7 @@
     nix-index-db.url = "github:Mic92/nix-index-database";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nixgl.url = "github:guibou/nixGL";
+    ytdlp-gui.url = "github:bksalman/ytdlp-gui";
   };
 
   nixConfig = {
@@ -91,7 +101,6 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       "fufexan.cachix.org-1:LwCDjCJNJQf5XD2BV+yamQIMZfcKWR9ISIFy5curUsY="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "cache.privatevoid.net:SErQ8bvNWANeAvtsOESUwVYr2VJynfuc9JRwlzTTkVg="
     ];
