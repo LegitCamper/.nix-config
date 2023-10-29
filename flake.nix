@@ -35,7 +35,6 @@
         # define overlays here
         ({ config, pkgs, ... }: {
           nixpkgs.overlays = [
-            inputs.ytdlp-gui.overlay
             # 
           ];
         })
@@ -78,7 +77,6 @@
     nix-index-db.url = "github:Mic92/nix-index-database";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nixgl.url = "github:guibou/nixGL";
-    ytdlp-gui.url = "github:bksalman/ytdlp-gui";
   };
 
   nixConfig = {

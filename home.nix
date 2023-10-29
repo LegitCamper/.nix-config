@@ -9,8 +9,7 @@
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     
-    # overlay installation
-    ytdlp-gui
+    # overlay installation here 
 
     # Networking tools
     inetutils # hostname ping ifconfig...
@@ -101,6 +100,7 @@
     upower
     htop
     tldr
+    yt-dlp
 
     # dev
     ansible-language-server
