@@ -1,17 +1,22 @@
 name: nix flake check
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  push:
+    branches: [main]
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-
+  build:
+    name: Build Nix targets
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - name: Check Nix flake inputs
+        uses: DeterminateSystems/flake-checker-action@v4 # This action
+        with:        
+          nixpkgs-keys: nixpkgs-unstable
       - name: Install Nix
-        uses: cachix/install-nix-action@v17
-      - run: cd nix && nix flake check --no-build --impure
+        uses: DeterminateSystems/nix-installer-action@v3
+      - name: Build default package
+        run: nix build
+        
