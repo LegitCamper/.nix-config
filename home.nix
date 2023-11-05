@@ -8,6 +8,7 @@
     #-- customize flake packages here
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-ge
+    inputs.helix.packages.${pkgs.system}.default
     
     # overlay installation here 
 
@@ -124,7 +125,6 @@
     # rust tools
     eza
     ripgrep
-    helix
     zellij
     macchina
     starship
