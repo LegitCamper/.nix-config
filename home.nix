@@ -66,6 +66,7 @@
     libsForQt5.kate
     libsForQt5.gwenview
     libsForQt5.kcalc
+    libsForQt5.elisa
     emote
     socat
     qemu
