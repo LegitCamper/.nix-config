@@ -1,7 +1,7 @@
 {
   description = "LegitCamper's NixOs Flake on Unstable";
 
-  outputs = { nixpkgs, home-manager, hyprland, ... }@inputs:
+  outputs = { nixpkgs, home-manager, hyprland, devshells, ... }@inputs:
     let
       allSystems = [
         "x86_64-linux" # AMD/Intel Linux
@@ -56,12 +56,7 @@
       # used when calling `nix fmt <path/to/flake.nix>`
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
 
-      devShells = forAllSystems
-        ({ pkgs }: { default = pkgs.mkShell { 
-          buildInputs = [
-            (import ./devshells { inherit pkgs; })
-          ];
-        }; });
+      # devShells = forAllSystems ({ pkgs }: { default = pkgs.mkShell { }; });
 
       # define packages here
       # packages = forAllSystems ({ pkgs }: { hello = pkgs.hello; });
@@ -81,6 +76,7 @@
     nix-index-db.url = "github:Mic92/nix-index-database";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nixgl.url = "github:guibou/nixGL";
+   devshells.url = "github:the-nix-way/dev-templates";
   };
 
   nixConfig = {
