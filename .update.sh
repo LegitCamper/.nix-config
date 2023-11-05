@@ -11,7 +11,7 @@ ansible-vault decrypt ~/.config/nix/nix.conf
 cachix use nix-community
 cachix use helix
 
-nix flake check --all-systems
+nix flake check --all-systems --no-build
 
 nix flake update --accept-flake-config
 
