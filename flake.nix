@@ -57,7 +57,11 @@
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
 
       devShells = forAllSystems
-        ({ pkgs }: { default = pkgs.mkShell { imports = [ ./devshells ]; }; });
+        ({ pkgs }: { default = pkgs.mkShell { 
+          buildInputs = [
+            (import ./devshells { inherit pkgs; })
+          ];
+        }; });
 
       # define packages here
       # packages = forAllSystems ({ pkgs }: { hello = pkgs.hello; });
