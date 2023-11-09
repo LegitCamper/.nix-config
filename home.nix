@@ -96,7 +96,6 @@
     bitwarden-cli
     stow
     alacritty
-    kitty
     fd
     fish
     upower
@@ -130,7 +129,6 @@
     macchina
     starship
     zoxide
-    wezterm
     # helix # replaced by flake
   ];
 
