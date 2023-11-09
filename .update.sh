@@ -6,19 +6,29 @@ cd ~/projects/.nix-config
 git pull
 
 # decrypt nix.conf github token
-ansible-vault decrypt ~/.config/nix/nix.conf
+if [[ $(head -n 1 ~/.config/nix/nix.conf) == *ANSIBLE_VAULT* ]]; then
+  ansible-vault decrypt ~/.config/nix/nix.conf
+else
+  echo "Vault already decrypted"
+fi
 
-cachix use nix-community
-cachix use helix
+if [ $1 == system ]; then
+  cachix use nix-community
+  cachix use helix
 
-nix flake check --all-systems --no-build
+  nix flake update --accept-flake-config
+  sudo nixos-rebuild switch --upgrade-all --flake .# #--install-bootloader --use-remote-sudo --impure --use-substitutes
+  nix-env --delete-generations 14d
+  # nix-store --gc
+elif [ $1 == home ]; then 
+  home-manager switch
 
-nix flake update --accept-flake-config
+elif [ $1 == check ]; then
+  nix flake check --all-systems --no-build
 
-sudo nixos-rebuild switch --upgrade-all --flake .# #--install-bootloader --use-remote-sudo --impure --use-substitutes
+else
+  echo "Arg must be one of the following: 'system' for system upgrades or 'home' for home upgrades"
 
-nix-env --delete-generations 14d
-
-# nix-store --gc
+fi
 
 cd -

@@ -182,8 +182,8 @@
   # changes in each release.
   home.stateVersion = "23.05";
 
-  # Disables version compatablity check
-  home.enableNixpkgsReleaseCheck = false;
+  # Enables version compatablity check
+  home.enableNixpkgsReleaseCheck = true;
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
