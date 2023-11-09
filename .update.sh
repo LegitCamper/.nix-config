@@ -33,5 +33,6 @@ fi
 
 # update other tools
 nix-shell -p clang --run "hx --grammar fetch && hx --grammar build"
+bash ~/projects/.dotfiles/.stow.sh
 
 cd -
