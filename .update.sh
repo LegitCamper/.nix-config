@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# updates nixos systems
+# updates nixos systems and tools
 
 cd ~/projects/.nix-config
 
@@ -30,5 +30,8 @@ else
   echo "Arg must be one of the following: 'system' for system upgrades or 'home' for home upgrades"
 
 fi
+
+# update other tools
+nix-shell -p clang --run "hx --grammar fetch && hx --grammar build"
 
 cd -
