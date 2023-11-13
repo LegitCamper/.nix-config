@@ -17,9 +17,13 @@
     connect-timeout = 5;
   };
 
-  networking.networkmanager.enable = true;
-  networking.wireless.iwd.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
+  networking = {
+    networkmanager.enable = true;
+    wireless.iwd.enable = true;
+    networkmanager.wifi.backend = "iwd";
+    # Configures my dns server and cloudflare as backup
+    nameservers = [ "24.199.78.82" "1.1.1.1" "1.0.0.1" ];
+  };
 
   # Set your time zone.
   time.timeZone = "America/Denver";
@@ -222,7 +226,7 @@
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   system.copySystemConfiguration = false;
-  system.autoUpgrade = { 
+  system.autoUpgrade = {
     enable = false;
     allowReboot = false;
     channel = "https://channels.nixos.org/nixos-23.05";
