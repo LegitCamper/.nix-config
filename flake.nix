@@ -40,7 +40,7 @@
         # define overlays here
         ({ config, pkgs, ... }: {
           nixpkgs.overlays = [
-            # 
+            #
           ];
         })
       ];
@@ -89,7 +89,7 @@
     };
     nixpkgs-wayland = {
       url = "github:nix-community/nixpkgs-wayland";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nil = {
       url = "github:oxalica/nil/2023-05-09";
@@ -109,7 +109,7 @@
     };
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs-wayland";
     };
     nixgl = {
       url = "github:guibou/nixGL";

@@ -1,10 +1,14 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+
+{
   nixpkgs.config = {
-    allowUnfree = true;
     # the following should only be temporary!!!!!!!
     # Known issues:
     #    - Electron version 24.8.6 is EOL
     permittedInsecurePackages = [ "electron-24.8.6" ];
+
+    # Allow proprietary packages
+    allowUnfree = true;
   };
 
   nix.settings = {

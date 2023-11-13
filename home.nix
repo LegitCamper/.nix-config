@@ -1,137 +1,135 @@
 { pkgs, inputs, ... }:
-let
-
-  pkgsStable = import inputs.nixpkgs-stable { };
-
+# pkgs is unstable
+let stable = import inputs.nixpkgs-stable { config = { allowUnfree = true; }; };
 in {
   home.username = "sawyer";
   home.homeDirectory = "/home/sawyer";
 
-  home.packages = with pkgsStable; [
+  home.packages = with pkgs; [
     #-- customize flake packages here
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-ge
-    inputs.helix.packages.${pkgs.system}.default
+    inputs.helix.packages.${stable.system}.default
 
     # overlay installation here 
 
     # Networking tools
-    inetutils # hostname ping ifconfig...
-    dnsutils # dig nslookup...
-    bridge-utils # brctl
-    iw
-    wirelesstools # iwconfig
+    stable.inetutils # hostname ping ifconfig...
+    stable.dnsutils # dig nslookup...
+    stable.bridge-utils # brctl
+    stable.iw
+    stable.wirelesstools # iwconfig
 
     # nix
-    nixfmt # nix formatter
-    nil # nix lsp
+    stable.nixfmt # nix formatter
+    stable.nil # nix lsp
     home-manager
-    nixpkgs-review
-    cachix
+    stable.nixpkgs-review
+    stable.cachix
 
     # window manager
     pulseaudio
-    libsForQt5.qtstyleplugin-kvantum
-    lxqt.lxqt-qtplugin
-    papirus-icon-theme
-    networkmanagerapplet
-    lxappearance
-    dolphin
-    pavucontrol
-    blueman
-    xboxdrv
-    swayidle
-    swaybg
-    wofi
-    dunst
-    playerctl
-    waybar
-    grim
-    slurp
-    wl-clipboard
-    socat
-    brightnessctl
-    bash
-    fish
-    moreutils # sponge...
-    unzip
-    git
-    wget
-    htop
-    efibootmgr
-    ansible
-    usbutils # lsusb
+    stable.libsForQt5.qtstyleplugin-kvantum
+    stable.lxqt.lxqt-qtplugin
+    stable.papirus-icon-theme
+    stable.networkmanagerapplet
+    stable.lxappearance
+    stable.dolphin
+    stable.pavucontrol
+    stable.blueman
+    stable.xboxdrv
+    stable.swayidle
+    stable.swaybg
+    stable.wofi
+    stable.dunst
+    stable.playerctl
+    stable.waybar
+    stable.grim
+    stable.slurp
+    stable.wl-clipboard
+    stable.socat
+    stable.brightnessctl
+    stable.bash
+    stable.fish
+    stable.moreutils # sponge...
+    stable.unzip
+    stable.git
+    stable.wget
+    stable.htop
+    stable.efibootmgr
+    stable.ansible
+    stable.usbutils # lsusb
 
     # apps
-    bitwarden
-    libsForQt5.dolphin
-    libsForQt5.ark
-    libsForQt5.kate
-    libsForQt5.gwenview
-    libsForQt5.kcalc
-    libsForQt5.elisa
-    emote
-    socat
-    qemu
-    libreoffice
-    vlc
-    gnome.pomodoro
-    ffmpeg-full
-    procs
-    solaar
+    stable.bitwarden
+    stable.libsForQt5.dolphin
+    stable.libsForQt5.ark
+    stable.libsForQt5.kate
+    stable.libsForQt5.gwenview
+    stable.libsForQt5.kcalc
+    stable.libsForQt5.elisa
+    stable.emote
+    stable.socat
+    stable.qemu
+    stable.libreoffice
+    stable.vlc
+    stable.gnome.pomodoro
+    stable.ffmpeg-full
+    stable.procs
+    stable.solaar
     discord
     vivaldi
     vivaldi-ffmpeg-codecs
-    nuclear
-    obsidian
+    stable.nuclear
+    stable.obsidian
 
     # gaming
-    lutris
-    heroic
-    gamescope
+    stable.lutris
+    stable.heroic
+    stable.gamescope
     steamtinkerlaunch
-    minecraft
-    jre8 # for minecrfaft
+    stable.minecraft
+    stable.jre8 # for minecrfaft
 
     # cli
-    nmap
-    fd
-    bitwarden-cli
-    stow
-    alacritty
-    fd
-    fish
-    upower
-    htop
-    tldr
-    yt-dlp
+    stable.nmap
+    stable.fd
+    stable.bitwarden-cli
+    stable.stow
+    stable.alacritty
+    stable.fd
+    stable.fish
+    stable.upower
+    stable.htop
+    stable.tldr
+    stable.yt-dlp
 
     # dev
-    ansible-language-server
-    git
-    neovim
-    lazygit
-    gitui
-    lua-language-server
-    luaformatter # lua formatter
-    taplo # toml lsp
-    jq
-    fzf
-    docker
-    docker-ls
-    docker-compose
-    lazydocker
-    wireshark-qt
-    docker
-    docker-compose
+    stable.ansible-language-server
+    stable.git
+    stable.neovim
+    stable.lazygit
+    stable.gitui
+    stable.lua-language-server
+    stable.luaformatter # lua formatter
+    stable.taplo # toml lsp
+    stable.jq
+    stable.fzf
+    stable.docker
+    stable.docker-ls
+    stable.docker-compose
+    stable.lazydocker
+    stable.wireshark-qt
+    stable.docker
+    stable.docker-compose
 
     # rust tools
-    pkgs.eza # use from unstable
-    ripgrep
-    zellij
-    macchina
-    starship
-    zoxide
+    eza # use from unstable
+    stable.ripgrep
+    stable.zellij
+    stable.macchina
+    stable.starship
+    stable.zoxide
     # helix # replaced by flake
   ];
 
