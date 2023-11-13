@@ -130,7 +130,8 @@
     extraGroups.docker.members = [ "sawyer" ];
   };
 
-  fonts.packages = with pkgs; [
+  # fonts.packages = with pkgs; [ # unstable
+  fonts.fonts = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji

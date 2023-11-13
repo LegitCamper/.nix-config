@@ -1,6 +1,9 @@
 { pkgs, inputs, ... }:
+let
 
-{
+  pkgsUnstable = import <nixpkgs-unstable> { };
+
+in {
   home.username = "sawyer";
   home.homeDirectory = "/home/sawyer";
 
@@ -123,7 +126,7 @@
     docker-compose
 
     # rust tools
-    eza
+    pkgsUnstable.eza
     ripgrep
     zellij
     macchina
