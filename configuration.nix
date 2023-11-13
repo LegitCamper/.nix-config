@@ -19,7 +19,10 @@
 
   networking = {
     networkmanager.enable = true;
-    wireless.iwd.enable = true;
+    wireless.iwd = {
+      enable = true;
+      settings = { Settings = { AutoConnect = true; }; };
+    };
     networkmanager.wifi.backend = "iwd";
     # Configures my dns server and cloudflare as backup
     nameservers = [ "24.199.78.82" "1.1.1.1" "1.0.0.1" ];
