@@ -1,13 +1,13 @@
 { pkgs, inputs, ... }:
 let
 
-  pkgsUnstable = import <nixpkgs-unstable> { };
+  pkgsStable = import inputs.nixpkgs-stable { };
 
 in {
   home.username = "sawyer";
   home.homeDirectory = "/home/sawyer";
 
-  home.packages = with pkgs; [
+  home.packages = with pkgsStable; [
     #-- customize flake packages here
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-ge
@@ -126,7 +126,7 @@ in {
     docker-compose
 
     # rust tools
-    pkgsUnstable.eza
+    pkgs.eza # use from unstable
     ripgrep
     zellij
     macchina

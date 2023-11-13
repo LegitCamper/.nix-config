@@ -13,14 +13,17 @@ else
 fi
 
 if [ $1 == system ]; then
+  export NIXPKGS_ALLOW_UNFREE=1
   cachix use nix-community
   cachix use helix
 
   nix flake update --accept-flake-config
-  sudo nixos-rebuild switch --upgrade-all --flake .# #--install-bootloader --use-remote-sudo --impure --use-substitutes
+  sudo nixos-rebuild switch --upgrade-all --impure --flake .# #--install-bootloader --use-remote-sudo --impure --use-substitutes
   nix-env --delete-generations 14d
   # nix-store --gc
 elif [ $1 == home ]; then 
+  nix run home-manager/release-23.05 -- init --switch
+  #nix run home-manager/master -- init --switch
   home-manager switch
 
 elif [ $1 == check ]; then

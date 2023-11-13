@@ -1,9 +1,11 @@
 {
-  description = "LegitCamper's NixOs Flake on Unstable";
+  description = "LegitCamper's NixOs Flake on Stable + Unstable";
 
   outputs = { nixpkgs-stable, nixpkgs-unstable, home-manager, hyprland
     , devshells, ... }@inputs:
     let
+      nixpkgs = nixpkgs-unstable;
+
       allSystems = [
         "x86_64-linux" # AMD/Intel Linux
         "x86_64-darwin" # AMD/Intel macOS
@@ -12,7 +14,7 @@
       ];
 
       forAllSystems = fn:
-        nixpkgs-stable.lib.genAttrs allSystems
+        nixpkgs.lib.genAttrs allSystems
         (system: fn { pkgs = import nixpkgs-stable { inherit system; }; });
 
       # any configurations / overlays shared between all computers
@@ -46,11 +48,11 @@
     in {
       # gets separate configuration for each computer
       nixosConfigurations = {
-        nixos-desktop = nixpkgs-stable.lib.nixosSystem {
+        nixos-desktop = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [ ./hosts/nixos-desktop.nix ] ++ sharedModules;
         };
-        nixos-laptop = nixpkgs-stable.lib.nixosSystem {
+        nixos-laptop = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [ ./hosts/nixos-laptop.nix ] ++ sharedModules;
         };
@@ -95,7 +97,7 @@
     };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
