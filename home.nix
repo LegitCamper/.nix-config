@@ -9,127 +9,127 @@ in {
     #-- customize flake packages here
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-ge
-    inputs.helix.packages.${stable.system}.default
+    inputs.helix.packages.${pkgs.system}.default
 
     # overlay installation here 
 
     # Networking tools
-    stable.inetutils # hostname ping ifconfig...
-    stable.dnsutils # dig nslookup...
-    stable.bridge-utils # brctl
-    stable.iw
-    stable.wirelesstools # iwconfig
+    inetutils # hostname ping ifconfig...
+    dnsutils # dig nslookup...
+    bridge-utils # brctl
+    iw
+    wirelesstools # iwconfig
 
     # nix
-    stable.nixfmt # nix formatter
-    stable.nil # nix lsp
+    nixfmt # nix formatter
+    nil # nix lsp
     home-manager
-    stable.nixpkgs-review
-    stable.cachix
+    nixpkgs-review
+    cachix
 
     # window manager
     pulseaudio
-    stable.libsForQt5.qtstyleplugin-kvantum
-    stable.lxqt.lxqt-qtplugin
-    stable.papirus-icon-theme
-    stable.networkmanagerapplet
-    stable.lxappearance
-    stable.dolphin
-    stable.pavucontrol
-    stable.blueman
-    stable.xboxdrv
-    stable.swayidle
-    stable.swaybg
-    stable.wofi
-    stable.dunst
-    stable.playerctl
-    stable.waybar
-    stable.grim
-    stable.slurp
-    stable.wl-clipboard
-    stable.socat
-    stable.brightnessctl
-    stable.bash
-    stable.fish
-    stable.moreutils # sponge...
-    stable.unzip
-    stable.git
-    stable.wget
-    stable.htop
-    stable.efibootmgr
-    stable.ansible
-    stable.usbutils # lsusb
+    libsForQt5.qtstyleplugin-kvantum
+    lxqt.lxqt-qtplugin
+    papirus-icon-theme
+    networkmanagerapplet
+    lxappearance
+    dolphin
+    pavucontrol
+    blueman
+    xboxdrv
+    swayidle
+    swaybg
+    wofi
+    dunst
+    playerctl
+    waybar
+    grim
+    slurp
+    wl-clipboard
+    socat
+    brightnessctl
+    bash
+    fish
+    moreutils # sponge...
+    unzip
+    git
+    wget
+    htop
+    efibootmgr
+    ansible
+    usbutils # lsusb
 
     # apps
-    stable.bitwarden
-    stable.libsForQt5.dolphin
-    stable.libsForQt5.ark
-    stable.libsForQt5.kate
-    stable.libsForQt5.gwenview
-    stable.libsForQt5.kcalc
-    stable.libsForQt5.elisa
-    stable.emote
-    stable.socat
-    stable.qemu
-    stable.libreoffice
-    stable.vlc
-    stable.gnome.pomodoro
-    stable.ffmpeg-full
-    stable.procs
-    stable.solaar
+    bitwarden
+    libsForQt5.dolphin
+    libsForQt5.ark
+    libsForQt5.kate
+    libsForQt5.gwenview
+    libsForQt5.kcalc
+    rhythmbox
+    emote
+    socat
+    qemu
+    libreoffice
+    vlc
+    gnome.pomodoro
+    ffmpeg-full
+    procs
+    solaar
     discord
     vivaldi
     vivaldi-ffmpeg-codecs
-    stable.nuclear
-    stable.obsidian
+    nuclear
+    obsidian
 
     # gaming
-    stable.lutris
-    stable.heroic
-    stable.gamescope
+    lutris
+    heroic
+    gamescope
     steamtinkerlaunch
-    stable.minecraft
-    stable.jre8 # for minecrfaft
+    minecraft
+    jre8 # for minecrfaft
 
     # cli
-    stable.nmap
-    stable.fd
-    stable.bitwarden-cli
-    stable.stow
-    stable.alacritty
-    stable.fd
-    stable.fish
-    stable.upower
-    stable.htop
-    stable.tldr
-    stable.yt-dlp
+    nmap
+    fd
+    bitwarden-cli
+    stow
+    alacritty
+    fd
+    fish
+    upower
+    htop
+    tldr
+    yt-dlp
 
     # dev
-    stable.ansible-language-server
-    stable.git
-    stable.neovim
-    stable.lazygit
-    stable.gitui
-    stable.lua-language-server
-    stable.luaformatter # lua formatter
-    stable.taplo # toml lsp
-    stable.jq
-    stable.fzf
-    stable.docker
-    stable.docker-ls
-    stable.docker-compose
-    stable.lazydocker
-    stable.wireshark-qt
-    stable.docker
-    stable.docker-compose
+    ansible-language-server
+    git
+    neovim
+    lazygit
+    gitui
+    lua-language-server
+    luaformatter # lua formatter
+    taplo # toml lsp
+    jq
+    fzf
+    docker
+    docker-ls
+    docker-compose
+    lazydocker
+    wireshark-qt
+    docker
+    docker-compose
 
     # rust tools
     eza # use from unstable
-    stable.ripgrep
-    stable.zellij
-    stable.macchina
-    stable.starship
-    stable.zoxide
+    ripgrep
+    zellij
+    macchina
+    starship
+    zoxide
     # helix # replaced by flake
   ];
 

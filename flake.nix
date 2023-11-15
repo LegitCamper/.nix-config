@@ -1,11 +1,8 @@
 {
   description = "LegitCamper's NixOs Flake on Stable + Unstable";
 
-  outputs = { nixpkgs-stable, nixpkgs-unstable, home-manager, hyprland
-    , devshells, ... }@inputs:
+  outputs = { nixpkgs, home-manager, hyprland, devshells, ... }@inputs:
     let
-      nixpkgs = nixpkgs-unstable;
-
       allSystems = [
         "x86_64-linux" # AMD/Intel Linux
         "x86_64-darwin" # AMD/Intel macOS
@@ -15,7 +12,7 @@
 
       forAllSystems = fn:
         nixpkgs.lib.genAttrs allSystems
-        (system: fn { pkgs = import nixpkgs-stable { inherit system; }; });
+        (system: fn { pkgs = import nixpkgs { inherit system; }; });
 
       # any configurations / overlays shared between all computers
       sharedModules = [
@@ -69,56 +66,20 @@
 
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    helix = {
-      url = "github:helix-editor/helix";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    nixpkgs-wayland = {
-      url = "github:nix-community/nixpkgs-wayland";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    nil = {
-      url = "github:oxalica/nil/2023-05-09";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    nix-index-db = {
-      url = "github:Mic92/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-      inputs.nixpkgs.follows = "nixpkgs-wayland";
-    };
-    nixgl = {
-      url = "github:guibou/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-    devshells = {
-      url = "github:the-nix-way/dev-templates";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
+    helix.url = "github:helix-editor/helix";
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-contrib.url = "github:hyprwm/contrib";
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    nil.url = "github:oxalica/nil/2023-05-09";
+    home-manager.url = "github:nix-community/home-manager";
+    lanzaboote.url = "github:nix-community/lanzaboote";
+    nix-index-db.url = "github:Mic92/nix-index-database";
+    nix-gaming.url = "github:fufexan/nix-gaming";
+    nixgl.url = "github:guibou/nixGL";
+    devshells.url = "github:the-nix-way/dev-templates";
   };
 
   nixConfig = {
