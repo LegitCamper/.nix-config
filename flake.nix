@@ -30,7 +30,7 @@
         {
           programs.hyprland = {
             enable = true;
-            enableNvidiaPatches = false;
+            # enableNvidiaPatches = false;
           };
         }
 

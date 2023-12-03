@@ -69,6 +69,11 @@
   # List services that you want to enable:
   services = {
     printing.enable = true;
+    avahi = {
+      enable = true;
+      nssmdns = true;
+      openFirewall = true;
+    };
     flatpak.enable = true;
     upower.enable = true;
     dbus.enable = true;
