@@ -1,11 +1,11 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, options, ... }:
 
 {
   nixpkgs.config = {
     # the following should only be temporary!!!!!!!
     # Known issues:
     #    - Electron version 24.8.6 is EOL
-    permittedInsecurePackages = [ "electron-24.8.6" ];
+    permittedInsecurePackages = [ "electron-25.9.0" ];
 
     # Allow proprietary packages
     allowUnfree = true;
@@ -30,6 +30,12 @@
     networkmanager.wifi.backend = "iwd";
     # Configures my dns server and cloudflare as backup
     nameservers = [ "24.199.78.82" "1.1.1.1" "1.0.0.1" ];
+    timeServers = options.networking.timeServers.default ++ [
+      "0.pool.ntp.org"
+      "1.pool.ntp.org"
+      "2.pool.ntp.org"
+      "3.pool.ntp.org"
+    ];
   };
 
   # Set your time zone.
@@ -71,7 +77,7 @@
     printing.enable = true;
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
       openFirewall = true;
     };
     flatpak.enable = true;
