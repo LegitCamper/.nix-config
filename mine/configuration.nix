@@ -88,10 +88,6 @@
       enable = true;
       package = pkgs.tailscale;
     };
-    # auto mounts usb drives
-    udev.extraRules = ''
-      ACTION=="add", SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", RUN{program}+="${pkgs.systemd}/bin/systemd-mount --no-block --o umask=000 --automount=yes --collect $devnode /external-drive"      
-    '';
 
     # enable sound with pipewire
     pipewire = {
@@ -130,6 +126,25 @@
   environment.etc."greetd/environments".text = ''
     Hyprland
   '';
+  services.dnscrypt-proxy2 = {
+    enable = true;
+    settings = {
+      ipv6_servers = true;
+      require_dnssec = true;
+
+      sources.public-resolvers = {
+        urls = [
+          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+        ];
+        cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
+        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      };
+
+      # You can choose a specific set of servers from https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
+      # server_names = [ ... ];
+    };
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
@@ -166,9 +181,13 @@
   security = {
     polkit.enable = true;
     rtkit.enable = true;
-    pam.services.kwallet = {
-      name = "kwallet";
-      enableKwallet = true;
+    pam.services = {
+      kwallet = {
+        name = "kwallet";
+        enableKwallet = true;
+      };
+      login.u2fAuth = true;
+      sudo.u2fAuth = true;
     };
   };
 
@@ -190,6 +209,9 @@
     extraConfig = ''
       DefaultTimeoutStopSec=10s
     '';
+    services.dnscrypt-proxy2.serviceConfig = {
+      StateDirectory = "dnscrypt-proxy";
+    };
   };
 
   virtualisation.docker = {

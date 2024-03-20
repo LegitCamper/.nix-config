@@ -1,31 +1,41 @@
 {
-  description = "LegitCamper's NixOs Flake on Stable + Unstable";
+  description = "My nixos config";
 
-  outputs = { nixpkgs, home-manager, hyprland, devshells, ... }@inputs:
+  nixConfig.experimental-features = [ "nix-command" "flakes" ];
+
+  inputs = {
+    # Nixpkgs
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    # You can access packages and modules from different nixpkgs revs
+    # at the same time. Here's an working example:
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
+
+    # Home manager
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs =
+    { self
+    , nixpkgs
+    , home-manager
+    , ...
+    } @ inputs:
     let
-      allSystems = [
-        "x86_64-linux" # AMD/Intel Linux
-        "x86_64-darwin" # AMD/Intel macOS
-        "aarch64-linux" # ARM Linux
-        "aarch64-darwin" # ARM macOS
+      inherit (self) outputs;
+      # Supported systems for your flake packages, shell, etc.
+      systems = [
+        "aarch64-linux"
+        "i686-linux"
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
       ];
-
-      forAllSystems = fn:
-        nixpkgs.lib.genAttrs allSystems
-        (system: fn { pkgs = import nixpkgs { inherit system; }; });
-
-      # any configurations / overlays shared between all computers
+      # This is a function that generates an attribute by calling a function you
+      # pass to it, with each system as an argument
+      forAllSystems = nixpkgs.lib.genAttrs systems;
       sharedModules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.sawyer = import ./home.nix;
-            extraSpecialArgs = { inherit inputs; };
-          };
-        }
         hyprland.nixosModules.default
         {
           programs.hyprland = {
@@ -33,77 +43,49 @@
             # enableNvidiaPatches = false;
           };
         }
+      ]
+        in {
+        # Your custom packages
+        # Accessible through 'nix build', 'nix shell', etc
+        packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      # Formatter for your nix files, available through 'nix fmt'
+      # Other options beside 'alejandra' include 'nixpkgs-fmt'
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-        # define overlays here
-        ({ config, pkgs, ... }: {
-          nixpkgs.overlays = [
-            #
-          ];
-        })
-      ];
+      # Your custom packages and modifications, exported as overlays
+      overlays = import ./overlays { inherit inputs; };
+      # Reusable nixos modules you might want to export
+      # These are usually stuff you would upstream into nixpkgs
+      nixosModules = import ./modules/nixos;
+      # Reusable home-manager modules you might want to export
+      # These are usually stuff you would upstream into home-manager
+      homeManagerModules = import ./modules/home-manager;
 
-    in {
-      # gets separate configuration for each computer
+      # NixOS configuration entrypoint
+      # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
-        nixos-desktop = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./hosts/nixos-desktop.nix ] ++ sharedModules;
-        };
-        nixos-laptop = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./hosts/nixos-laptop.nix ] ++ sharedModules;
+        # Desktop configuration
+        icarus = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            # > Our main nixos configuration file <
+            ./nixos/configuration.nix
+            ./hosts/icarus.nix
+          ];
         };
       };
 
-      # used when calling `nix fmt <path/to/flake.nix>`
-      formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
-
-      # devShells = forAllSystems ({ pkgs }: { default = pkgs.mkShell { }; });
-
-      # define packages here
-      # packages = forAllSystems ({ pkgs }: { hello = pkgs.hello; });
-    };
-
-  inputs = {
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    helix.url = "github:helix-editor/helix";
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-contrib.url = "github:hyprwm/contrib";
-    nixos-generators.url = "github:nix-community/nixos-generators";
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
-    nil.url = "github:oxalica/nil/2023-05-09";
-    home-manager.url = "github:nix-community/home-manager";
-    lanzaboote.url = "github:nix-community/lanzaboote";
-    nix-index-db.url = "github:Mic92/nix-index-database";
-    nix-gaming.url = "github:fufexan/nix-gaming";
-    nixgl.url = "github:guibou/nixGL";
-    devshells.url = "github:the-nix-way/dev-templates";
-  };
-
-  nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-      "https://nixpkgs-wayland.cachix.org"
-      "https://nix-gaming.cachix.org"
-      "https://helix.cachix.org"
-      "https://fufexan.cachix.org"
-      "https://hyprland.cachix.org"
-      "https://cache.privatevoid.net"
-    ];
-    extra-trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
-      "fufexan.cachix.org-1:LwCDjCJNJQf5XD2BV+yamQIMZfcKWR9ISIFy5curUsY="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "cache.privatevoid.net:SErQ8bvNWANeAvtsOESUwVYr2VJynfuc9JRwlzTTkVg="
-    ];
-  };
-}
+      # Standalone home-manager configuration entrypoint
+      # Available through 'home-manager --flake .#your-username@your-hostname'
+      homeConfigurations = {
+        "sawyer@hermes" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./home-manager/home.nix
+          ];
+        };
+      };
+      };
+      }
